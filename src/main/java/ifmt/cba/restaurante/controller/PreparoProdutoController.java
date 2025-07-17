@@ -25,16 +25,16 @@ public class PreparoProdutoController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public PreparoProdutoDTO inserir(@RequestBody PreparoProdutoDTO preparoProdutoDTO) throws NotValidDataException {
-        PreparoProdutoDTO dto = preparoProdutoNegocio.inserir(preparoProdutoDTO);
-        addLinks(dto);
-        return dto;
+        PreparoProdutoDTO preparoProdutoDTO = preparoProdutoNegocio.inserir(preparoProdutoDTO);
+        addLinks(preparoProdutoDTO);
+        return preparoProdutoDTO;
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public PreparoProdutoDTO alterar(@RequestBody PreparoProdutoDTO preparoProdutoDTO) throws NotValidDataException, NotFoundException {
         PreparoProdutoDTO dto = preparoProdutoNegocio.alterar(preparoProdutoDTO);
-        addLinks(dto);
-        return dto;
+        addLinks(preparoProdutoDTO);
+        return preparoProdutoDTO;
     }
 
     @DeleteMapping(value = "/{codigo}")
@@ -44,23 +44,23 @@ public class PreparoProdutoController {
 
     @GetMapping(value = "/codigo/{codigo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PreparoProdutoDTO buscarPorCodigo(@PathVariable int codigo) throws NotFoundException {
-        PreparoProdutoDTO dto = preparoProdutoNegocio.pesquisaPorCodigo(codigo);
-        addLinks(dto);
-        return dto;
+        PreparoProdutoDTO preparoProdutoDTO = preparoProdutoNegocio.pesquisaPorCodigo(codigo);
+        addLinks(preparoProdutoDTO);
+        return preparoProdutoDTO;
     }
 
     @GetMapping(value = "/nome/{nome}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PreparoProdutoDTO buscarPorNome(@PathVariable String nome) throws NotFoundException {
-        PreparoProdutoDTO dto = preparoProdutoNegocio.pesquisaPorNome(nome);
-        addLinks(dto);
-        return dto;
+        PreparoProdutoDTO preparoProdutoDTO = preparoProdutoNegocio.pesquisaPorNome(nome);
+        addLinks(preparoProdutoDTO);
+        return preparoProdutoDTO;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PreparoProdutoDTO> buscarTodos() throws NotFoundException {
         List<PreparoProdutoDTO> lista = preparoProdutoNegocio.pesquisaTodos();
-        for (PreparoProdutoDTO dto : lista) {
-            addLinks(dto);
+        for (PreparoProdutoDTO preparoProdutoDTO : lista) {
+            addLinks(preparoProdutoDTO);
         }
         return lista;
     }
@@ -68,8 +68,8 @@ public class PreparoProdutoController {
     @PostMapping(value = "/produto", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PreparoProdutoDTO> buscarPorProduto(@RequestBody ProdutoDTO produtoDTO) throws NotFoundException {
         List<PreparoProdutoDTO> lista = preparoProdutoNegocio.pesquisaPorProduto(produtoDTO);
-        for (PreparoProdutoDTO dto : lista) {
-            addLinks(dto);
+        for (PreparoProdutoDTO preparoProdutoDTO : lista) {
+            addLinks(preparoProdutoDTO);
         }
         return lista;
     }
@@ -77,8 +77,8 @@ public class PreparoProdutoController {
     @PostMapping(value = "/tipoPreparo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PreparoProdutoDTO> buscarPorTipoPreparo(@RequestBody TipoPreparoDTO tipoPreparoDTO) throws NotFoundException {
         List<PreparoProdutoDTO> lista = preparoProdutoNegocio.pesquisaPorTipoPreparo(tipoPreparoDTO);
-        for (PreparoProdutoDTO dto : lista) {
-            addLinks(dto);
+        for (PreparoProdutoDTO preparoProdutoDTO : lista) {
+            addLinks(preparoProdutoDTO);
         }
         return lista;
     }
@@ -92,15 +92,15 @@ public class PreparoProdutoController {
         return dto;
     }
 
-    private void addLinks(PreparoProdutoDTO dto) {
+    private void addLinks(PreparoProdutoDTO preparoProdutoDTO) {
         try {
-            dto.add(linkTo(methodOn(PreparoProdutoController.class).buscarPorCodigo(dto.getCodigo()))
+            preparoProdutoDTO.add(linkTo(methodOn(PreparoProdutoController.class).buscarPorCodigo(preparoProdutoDTO.getCodigo()))
                     .withSelfRel().withType("GET"));
 
-            dto.add(linkTo(methodOn(PreparoProdutoController.class).alterar(dto))
+            preparoProdutoDTO.add(linkTo(methodOn(PreparoProdutoController.class).alterar(preparoProdutoDTO))
                     .withRel("alterar").withType("PUT"));
 
-            dto.add(linkTo(methodOn(PreparoProdutoController.class).excluir(dto.getCodigo()))
+            preparoProdutoDTO.add(linkTo(methodOn(PreparoProdutoController.class).excluir(preparoProdutoDTO.getCodigo()))
                     .withRel("excluir").withType("DELETE"));
         } catch (Exception ignored) {}
     }
