@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ifmt.cba.restaurante.dto.MovimentoEstoqueDTO;
 import ifmt.cba.restaurante.dto.RegistroEstoqueDTO;
-import ifmt.cba.restaurante.entity.Produto;
 import ifmt.cba.restaurante.exception.NotFoundException;
 import ifmt.cba.restaurante.exception.NotValidDataException;
 import ifmt.cba.restaurante.negocio.RegistroEstoqueNegocio;
@@ -25,7 +23,7 @@ public class RegistroEstoqueController {
     private RegistroEstoqueNegocio registroEstoqueNegocio;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RegistroEstoqueDTO> buscarTodosPorMovimento(@RequestParam("movimento") MovimentoEstoqueDTO movimento) throws NotFoundException {
+    public List<RegistroEstoqueDTO> buscarTodosPorMovimento(@RequestParam("movimento") MovimentoEstoqueDTO movimento) throws NotFoundException, NotValidDataException {
         List<RegistroEstoqueDTO> listaregistroestoqueDTO = registroEstoqueNegocio.buscarPorMovimento(movimento);
 
         for (RegistroEstoqueDTO registroEstoqueDTO : listaregistroestoqueDTO) {
@@ -36,7 +34,7 @@ public class RegistroEstoqueController {
     }
 
     @GetMapping(value = "/codigo/{codigo}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RegistroEstoqueDTO buscarPorCodigo(@PathVariable("codigo") int codigo) throws NotFoundException {
+    public RegistroEstoqueDTO buscarPorCodigo(@PathVariable("codigo") int codigo) throws NotFoundException, NotValidDataException {
         RegistroEstoqueDTO registroEstoqueDTO = registroEstoqueNegocio.pesquisaCodigo(codigo);
         addHateoasLinksCRUD(registroEstoqueDTO);
         return registroEstoqueDTO;
@@ -45,7 +43,7 @@ public class RegistroEstoqueController {
     @GetMapping(value = "/movimento/{movimento}/data/{data}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RegistroEstoqueDTO> buscarPorMovimentoEData(
             @PathVariable("movimento") MovimentoEstoqueDTO movimento,
-            @PathVariable("data") String dataStr) throws NotFoundException {
+            @PathVariable("data") String dataStr) throws NotFoundException, NotValidDataException {
 
         LocalDate data = LocalDate.parse(dataStr);
         List<RegistroEstoqueDTO> listaregistroestoqueDTO = registroEstoqueNegocio.buscarPorMovimentoEData(movimento, data);
@@ -71,7 +69,7 @@ public class RegistroEstoqueController {
         return registroEstoquedto;
     }
 
-    private void addHateoasLinksCRUD(RegistroEstoqueDTO registroEstoqueDTO) throws NotFoundException {
+    private void addHateoasLinksCRUD(RegistroEstoqueDTO registroEstoqueDTO) throws NotFoundException, NotValidDataException {
         registroEstoqueDTO.add(linkTo(methodOn(RegistroEstoqueController.class).buscarPorCodigo(registroEstoqueDTO.getCodigo()))
                 .withSelfRel().withType("GET"));
 
