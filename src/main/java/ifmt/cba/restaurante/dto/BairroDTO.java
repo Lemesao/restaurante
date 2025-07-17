@@ -28,3 +28,4 @@ public class BairroDTO extends RepresentationModel<BairroDTO> implements Seriali
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 }
+
