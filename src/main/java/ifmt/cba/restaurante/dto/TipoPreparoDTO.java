@@ -2,6 +2,7 @@ package ifmt.cba.restaurante.dto;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.hateoas.Link;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,5 +23,9 @@ public class TipoPreparoDTO {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+    }
+
+    public void add(Link withType) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
