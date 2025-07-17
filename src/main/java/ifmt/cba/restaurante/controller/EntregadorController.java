@@ -82,7 +82,7 @@ public class EntregadorController {
             dto.add(linkTo(methodOn(EntregadorController.class).alterar(dto)).withRel("alterar").withType("PUT"));
             dto.add(linkTo(methodOn(EntregadorController.class).excluir(dto.getCodigo())).withRel("excluir").withType("DELETE"));
         } catch (NotFoundException | NotValidDataException e) {
-            // Você pode logar o erro, ignorar ou tratar conforme sua necessidade
+            
             e.printStackTrace();
         }
     }
